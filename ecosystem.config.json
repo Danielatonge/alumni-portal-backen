@@ -1,0 +1,16 @@
+{
+    "apps": [
+        {
+            "name": "backend",
+            "script": "npm",
+            "args": "start",
+            "node_args": "--experimental-specifier-resolution=node",
+            "env_production": {
+                "NODE_ENV": "production"
+            },
+            "env_development": {
+                "NODE_ENV": "development"
+            }
+        }
+    ]
+}

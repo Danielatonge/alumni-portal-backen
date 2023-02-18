@@ -1,0 +1,48 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+variables:
+    backendBuild: '.'
+
+pool:
+    name: 'Default'
+    demands: 
+        - Agent.OS -equals Linux
+
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.19.0'
+  displayName: 'Install Node.js'
+  
+# - script: rm -rf node_modules
+#   displayName: 'deleting old node_modules'
+  
+# - script: npm i
+#   displayName: 'npm install'
+
+# - script: npm run build
+#   displayName: 'npm build'
+
+# - script: npm run module_alias
+#   displayName: 'npm link-module-alias'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(backendBuild)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
